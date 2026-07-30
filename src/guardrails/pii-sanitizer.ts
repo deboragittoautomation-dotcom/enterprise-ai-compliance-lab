@@ -16,7 +16,7 @@ const PII_PATTERNS = {
   CREDIT_CARD: /\b(?:\d[ -]*?){13,16}\b/g,
 };
 
-export function sanitizePrompt(input: string): SanitizationResult {
+export function sanitizePII(input: string): SanitizationResult {
   let text = input;
   let maskedCount = 0;
   const detectedTypes: Set<string> = new Set();
