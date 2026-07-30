@@ -1,35 +1,41 @@
-import { sanitizePII } from '../src/guardrails/pii-sanitizer';
-import { evaluatePromptRisk } from '../src/risk-engine/risk-assessor';
+import { sanitizePrompt } from "../src/guardrails/pii-sanitizer";
+import { evaluatePromptRisk } from "../src/risk-engine/risk-assessor";
 
 export default async function handler(req: any, res: any) {
-  // Consenti chiamate da Framer (CORS)
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  // CORS
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+    "Access-Control-Allow-Methods",
+    "GET,OPTIONS,PATCH,DELETE,POST,PUT"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
   );
 
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
   }
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  if (req.method !== "POST") {
+    return res.status(405).json({
+      error: "Method not allowed",
+    });
   }
 
   const { prompt } = req.body || {};
 
   if (!prompt) {
-    return res.status(400).json({ error: 'Prompt is required' });
+    return res.status(400).json({
+      error: "Prompt is required",
+    });
   }
 
-  // 1. Sanitizzazione PII
-  const piiResult = sanitizePII(prompt);
+  // Sanitizzazione PII
+  const piiResult = sanitizePrompt(prompt);
 
-  // 2. Valutazione Rischio EU AI Act
+  // Analisi rischio
   const riskResult = evaluatePromptRisk(piiResult.sanitizedText);
 
   return res.status(200).json({
@@ -40,4 +46,4 @@ export default async function handler(req: any, res: any) {
     complianceFlags: riskResult.complianceFlags,
     requiresHumanInTheLoop: riskResult.requiresHumanInTheLoop,
   });
-}
+} Ki
