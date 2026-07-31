@@ -1,4 +1,4 @@
-import { sanitizePrompt } from "../src/guardrails/pii-sanitizer";
+import { sanitizePII } from "../src/guardrails/pii-sanitizer";
 import { evaluatePromptRisk } from "../src/risk-engine/risk-assessor";
 
 export default async function handler(req: any, res: any) {
@@ -33,7 +33,7 @@ export default async function handler(req: any, res: any) {
   }
 
   // Sanitizzazione PII
-  const piiResult = sanitizePrompt(prompt);
+  const piiResult = sanitizePII(prompt);
 
   // Analisi rischio
   const riskResult = evaluatePromptRisk(piiResult.sanitizedText);
