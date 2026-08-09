@@ -1,0 +1,31 @@
+{
+  "name": "enterprise-ai-compliance-lab",
+  "version": "1.0.0",
+  "description": "Enterprise AI Compliance Guardrail",
+  "private": true,
+  "scripts": {
+    "dev": "tsx src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "test": "tsx --test test/compliance-pipeline.test.ts"
+  },
+  "keywords": [
+    "ai",
+    "compliance",
+    "llm",
+    "guardrails",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^24.0.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1"
+  }
+}
